@@ -1,6 +1,5 @@
 package ua.lviv.lgs.service.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,7 +19,7 @@ public class UserServiceImpl implements UserService {
 	private UserServiceImpl() {
 		try {
 			userDao = new UserDaoImpl();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e);
 		}
 	}

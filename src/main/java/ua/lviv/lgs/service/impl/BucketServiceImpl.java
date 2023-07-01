@@ -20,7 +20,7 @@ public class BucketServiceImpl implements BucketService {
 
 		try {
 			bucketDao = new BucketDaoImpl();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e);
 		}
 	}

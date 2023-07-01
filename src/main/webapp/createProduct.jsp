@@ -7,6 +7,8 @@
 <meta charset="ISO-8859-1">
 <title>Cabinet</title>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -18,7 +20,7 @@
 	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
 	crossorigin="anonymous">
 
-<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/cp.css" />
 
 </head>
 <body>
@@ -45,7 +47,7 @@
 				</div>
 
 				<a class="btn btn-primary createProduct cvcvcv"
-					style="margin-left: 60px;" href="#">Submit</a>
+					style="margin-left: 60px;">Submit</a>
 			</form>
 
 		</div>
@@ -70,7 +72,6 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="js/header.js"></script>
-	<script src="js/serverCalls.js"></script>
 	<script src="js/serverCalls.js"></script>
 </body>
 </html>

@@ -1,53 +1,29 @@
 package ua.lviv.lgs.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import ua.lviv.lgs.dao.UserDao;
 import ua.lviv.lgs.domain.User;
-import ua.lviv.lgs.utils.ConnectionUtils;
+import ua.lviv.lgs.shared.FactoryManager;
 
 public class UserDaoImpl implements UserDao {
-
-	private static String READ_ALL = "select * from user";
-	private static String CREATE = "insert into user(`email`,`firstName`, `lastName`, `role`, `password`) values (?,?,?,?,?)";
-	private static String READ_BY_ID = "select * from user where id =?";
-	private static String READ_BY_EMAIL = "select * from user where email =?";
-	private static String UPDATE_BY_ID = "update user set email=?, firstName = ?, lastName = ?, role=?, password=?  where id = ?";
-	private static String DELETE_BY_ID = "delete from user where id=?";
-
-	private static Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
-
-	private Connection connection;
-	private PreparedStatement preparedStatement;
-
-	public UserDaoImpl() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		connection = ConnectionUtils.openConnection();
-	}
+	private EntityManager em = FactoryManager.getEntityManager();
 
 	@Override
 	public User create(User user) {
 		try {
-			preparedStatement = connection.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getFirstName());
-			preparedStatement.setString(3, user.getLastName());
-			preparedStatement.setString(4, user.getRole());
-			preparedStatement.setString(5, user.getPassword());
-			preparedStatement.executeUpdate();
-
-			ResultSet rs = preparedStatement.getGeneratedKeys();
-			rs.next();
-			user.setId(rs.getInt(1));
-		} catch (SQLException e) {
-			LOGGER.error(e);
+			em.getTransaction().begin();
+			em.persist(user);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return user;
@@ -57,21 +33,9 @@ public class UserDaoImpl implements UserDao {
 	public User read(Integer id) {
 		User user = null;
 		try {
-			preparedStatement = connection.prepareStatement(READ_BY_ID);
-			preparedStatement.setInt(1, id);
-			ResultSet result = preparedStatement.executeQuery();
-			result.next();
-
-			Integer userId = result.getInt("id");
-			String email = result.getString("email");
-			String firstName = result.getString("firstName");
-			String lastName = result.getString("lastName");
-			String role = result.getString("role");
-			String password = result.getString("password");
-			user = new User(userId, email, firstName, lastName, role, password);
-
-		} catch (SQLException e) {
-			LOGGER.error(e);
+			user = em.find(User.class, id);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return user;
@@ -80,16 +44,9 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User update(User user) {
 		try {
-			preparedStatement = connection.prepareStatement(UPDATE_BY_ID);
-			preparedStatement.setString(1, user.getEmail());
-			preparedStatement.setString(2, user.getFirstName());
-			preparedStatement.setString(3, user.getLastName());
-			preparedStatement.setString(4, user.getRole());
-			preparedStatement.setString(5, user.getPassword());
-			preparedStatement.setInt(6, user.getId());
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.error(e);
+			// TODO: to be implemented
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return user;
@@ -99,11 +56,9 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void delete(Integer id) {
 		try {
-			preparedStatement = connection.prepareStatement(DELETE_BY_ID);
-			preparedStatement.setInt(1, id);
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			LOGGER.error(e);
+			// TODO: to be implemented
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -111,19 +66,9 @@ public class UserDaoImpl implements UserDao {
 	public List<User> readAll() {
 		List<User> userRecords = new ArrayList<>();
 		try {
-			preparedStatement = connection.prepareStatement(READ_ALL);
-			ResultSet result = preparedStatement.executeQuery();
-			while (result.next()) {
-				Integer userId = result.getInt("id");
-				String email = result.getString("email");
-				String firstName = result.getString("firstName");
-				String lastName = result.getString("lastName");
-				String role = result.getString("role");
-				String password = result.getString("password");
-				userRecords.add(new User(userId, email, firstName, lastName, role, password));
-			}
-		} catch (SQLException e) {
-			LOGGER.error(e);
+			// TODO: to be implemented
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return userRecords;
@@ -133,23 +78,20 @@ public class UserDaoImpl implements UserDao {
 	public User getUserByEmail(String email) {
 		User user = null;
 		try {
-			preparedStatement = connection.prepareStatement(READ_BY_EMAIL);
-			preparedStatement.setString(1, email);
-			ResultSet result = preparedStatement.executeQuery();
-			result.next();
+			CriteriaBuilder builder = em.getCriteriaBuilder();
+			CriteriaQuery<User> criteria = builder.createQuery(User.class);
+			Root<User> from = criteria.from(User.class);
+			criteria.select(from);
+			criteria.where(builder.equal(from.get("email"), email));
+			TypedQuery<User> typed = em.createQuery(criteria);
+			user = typed.getSingleResult();
 
-			Integer userId = result.getInt("id");
-			String firstName = result.getString("firstName");
-			String lastName = result.getString("lastName");
-			String role = result.getString("role");
-			String password = result.getString("password");
-			user = new User(userId, email, firstName, lastName, role, password);
-
-		} catch (SQLException e) {
-			LOGGER.error(e);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return user;
+
 	}
 
 }

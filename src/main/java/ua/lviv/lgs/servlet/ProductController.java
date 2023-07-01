@@ -27,13 +27,10 @@ public class ProductController extends HttpServlet {
 		String price = request.getParameter("price");
 
 		Product product = new Product(name, description, getValidatedPrice(price));
-
 		productService.create(product);
-		
-		response.setContentType("text/plain");
+		response.setContentType("text");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write("Nice");
-
+		response.getWriter().write("Success");
 	}
 
 	private double getValidatedPrice(String price) {
@@ -47,7 +44,12 @@ public class ProductController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String productId = request.getParameter("id");
 
+		Product product = productService.read(Integer.parseInt(productId));
+
+		request.setAttribute("product", product);
+		request.getRequestDispatcher("singleProduct.jsp").forward(request, response);
 	}
 
 	// to update resource (product)

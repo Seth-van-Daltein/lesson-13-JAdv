@@ -2,13 +2,34 @@ package ua.lviv.lgs.domain;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
 public class User {
+	@Id
+	@Column(name = "id")
 	private Integer id;
+
+	@Column(name = "email")
 	private String email;
+
+	@Column(name = "firstName")
 	private String firstName;
+	
+	@Column(name = "lastName")
 	private String lastName;
+	
+	@Column(name = "role")
 	private String role;
+	
+	@Column(name = "password")
 	private String password;
+
+	public User() {}
 
 	public User(String email, String firstName, String lastName, String role, String password) {
 		this.email = email;

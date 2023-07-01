@@ -2,6 +2,9 @@ package ua.lviv.lgs.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -11,7 +14,7 @@ import ua.lviv.lgs.domain.Product;
 import ua.lviv.lgs.service.ProductService;
 
 public class ProductServiceImpl implements ProductService {
-	
+
 	private static Logger LOGGER = Logger.getLogger(ProductServiceImpl.class);
 
 	private static ProductService productServiceImpl;
@@ -21,13 +24,12 @@ public class ProductServiceImpl implements ProductService {
 
 		try {
 			productDao = new ProductDaoImpl();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
+		} catch (Exception e) {
 			LOGGER.error(e);
 		}
 
 	}
-	
-	
+
 	public static ProductService getProductService() {
 		if (productServiceImpl == null) {
 			productServiceImpl = new ProductServiceImpl();
@@ -35,7 +37,6 @@ public class ProductServiceImpl implements ProductService {
 
 		return productServiceImpl;
 	}
-	
 
 	@Override
 	public Product create(Product t) {
@@ -62,4 +63,8 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.readAll();
 	}
 
+	@Override
+	public Map<Integer, Product> readAllMap() {
+		return readAll().stream().collect(Collectors.toMap(Product::getId, Function.identity()));
+	}
 }

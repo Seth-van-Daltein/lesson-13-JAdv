@@ -8,7 +8,7 @@ import java.util.TimeZone;
 import org.apache.log4j.xml.DOMConfigurator;
 
 
-public class ConnectionUtils {
+public class ConnectionUtil {
 	
 	private static String USER_NAME = "Maxim";
 	private static String USER_PASSWORD = "Maxim12052008";

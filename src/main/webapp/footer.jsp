@@ -119,9 +119,13 @@ body {
 
 
 
+
+
 %
 {
 left
+
+
 
 
 
@@ -131,7 +135,11 @@ left
 
 
 
+
+
 100
+
+
 
 
 %;
@@ -147,9 +155,13 @@ keyframes bi-cycle { 0% {
 
 
 
+
+
 %
 {
 left
+
+
 
 
 
@@ -159,7 +171,11 @@ left
 
 
 
+
+
 100
+
+
 
 
 %;
@@ -175,12 +191,8 @@ ol, ul {
 }
 
 .footerll {
-	position: relative;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	padding: 1rem;
-	text-align: center;
+	width: 100%;
+	margin-top: 70px
 }
 </style>
 </head>

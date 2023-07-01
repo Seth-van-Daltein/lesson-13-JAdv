@@ -95,15 +95,12 @@ $("button.register").click(function() {
 	var lastName = $("form.register_form input.lastName").val();
 	var email = $("form.register_form input.email").val();
 	var password = $("form.register_form input.password").val();
-	var cpassword = $("form.register_form input.cpassword").val();
 
 	if (firstName == '' || lastName == '' || email == ''
-		|| password == '' || cpassword == '') {
+		|| password == '') {
 		alert("Please fill all fields...!!!!!!");
 	} else if ((password.length) < 6) {
-		alert("Password should atleast 6 character in length...!!!!!!");
-	} else if (!(password).match(cpassword)) {
-		alert("Your passwords don't match. Try again?");
+		alert("Password should atleast 6 character in length...!!!!!!")
 	} else {
 		var userRegistration = {
 			firstName: firstName,
